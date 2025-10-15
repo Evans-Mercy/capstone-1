@@ -18,7 +18,7 @@ public class Ledger {
     //search transactions by vendor
 
     //add a transaction
-    public static void addTransaction(Transaction t) {
+    public static void addTransaction(Transactions t) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(transactionFile, true))){
             writer.write(t.toCsvLine());
             writer.newLine();
