@@ -31,9 +31,9 @@ public class Ledger {
         Transactions testTransaction = new Transactions(
                 java.time.LocalDate.now(),
                 java.time.LocalTime.now(),
-                "Test Deposit",
+                "Keyboard tesing",
                 "Amazon",
-                35.00
+                600.00
         );
 
         addTransaction(testTransaction);
@@ -43,6 +43,8 @@ public class Ledger {
 
     //all transactions
     public static void allTransactions() {
+        //array list
+
         System.out.println("All transactions: ");
 
     }
