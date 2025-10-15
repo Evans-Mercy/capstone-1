@@ -1,6 +1,33 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Ledger {
+    //file path for all transactions
+    private static final String transactionFile = "src/main/resources/transactions.csv";
+
+
+    //to do
+    //read all transactions
+    //display all transactions - array list?
+    //sort newest first by date & time
+    //show deposits only
+    //show payments only
+    //search transactions by vendor
+
+    //add a transaction
+    public static void addTransaction(Transaction t) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(transactionFile, true))){
+            writer.write(t.toCsvLine());
+            writer.newLine();
+        }catch (IOException e){
+            System.out.println("Error saving transaction: " + e.getMessage());
+        }
+    }
+
+    //all transactions
     public static void allTransactions() {
         System.out.println("All transactions: ");
 

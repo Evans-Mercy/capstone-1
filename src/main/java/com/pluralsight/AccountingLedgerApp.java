@@ -76,6 +76,7 @@ public class AccountingLedgerApp {
         System.out.println("Enter amount: ");
         String amount = scanner.nextLine();
 
+        //to do - decimal place and negative amount
         System.out.println("Deposit added: " + description + " | " + vendor + " | " + amount);
     }
 

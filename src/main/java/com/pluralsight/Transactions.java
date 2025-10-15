@@ -39,6 +39,22 @@ public class Transactions {
         return amount;
     }
 
+    //to do
+    //save file
+    // read
+    // display
+
+    //return csv line for saving
+    public String toCsvLine() {
+        return
+                "date='" + date + '\'' +
+                ", time='" + time + '\'' +
+                ", description='" + description + '\'' +
+                ", vendor='" + vendor + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
+
     //To string method to print
     //ask Dave to remind me the override explanation
     @Override
