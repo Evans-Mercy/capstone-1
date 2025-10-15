@@ -87,16 +87,71 @@ public class AccountingLedgerApp {
             System.out.println("\n----Ledger Menu-----");
             System.out.println("[A] All Transactions");
             System.out.println("[D] Deposits");
-            System.out.println("[D] Payments");
-            System.out.println("[D] Reports");
-            System.out.println("[D] Home");
+            System.out.println("[P] Payments");
+            System.out.println("[R] Reports");
+            System.out.println("[H] Home");
             System.out.println("Enter your choice: ");
 
             choice = scanner.nextLine().trim();
 
             switch (choice.toUpperCase()) {
                 case "A":
+                    Ledger.allTransactions();
+                    break;
+                case "D":
+                    Ledger.deposits();
+                    break;
+                case "P":
+                    Ledger.payments();
+                case "R":
+                    reportsMenu();
+                    break;
+                case "H":
+                    System.out.println("Back to home page");
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again!");
+            }
+        }
+    }
 
+    //Reports menu
+    public static void reportsMenu(){
+        String choice = "";
+
+        while (!choice.equals("0")){
+            System.out.println("\n ------Reports Menu-------");
+            System.out.println("[1] Month To Date");
+            System.out.println("[2] Previous Month");
+            System.out.println("[3] Year To Date");
+            System.out.println("[4] Previous Year");
+            System.out.println("[5] Search by Vendor");
+            System.out.println("[0] Back to Ledger Menu");
+            System.out.println("Enter your choice: ");
+
+            choice= scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    Ledger.monthToDate();
+                    break;
+                case "2":
+                    Ledger.previousMonth();
+                    break;
+                case "3":
+                    Ledger.yearToDate();
+                    break;
+                case "4":
+                    Ledger.previousYear();
+                    break;
+                case "5":
+                    Ledger.searchByVendor();
+                    break;
+                case "0":
+                    System.out.println("Back to Ledger Menu");
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again!");
             }
         }
     }
