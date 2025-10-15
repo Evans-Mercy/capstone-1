@@ -1,10 +1,8 @@
 package com.pluralsight;
 
-import jdk.swing.interop.SwingInterOpUtils;
-
 import java.util.Scanner;
 
-public class AccountingLedgerApp {
+public class Main {
 
     //user input
     static Scanner scanner = new Scanner(System.in);
