@@ -31,7 +31,7 @@ public class Ledger {
         Transactions testTransaction = new Transactions(
                 java.time.LocalDate.now(),
                 java.time.LocalTime.now(),
-                "Keyboard tesing",
+                "Keyboard testing",
                 "Amazon",
                 600.00
         );
