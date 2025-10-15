@@ -36,10 +36,10 @@ public class AccountingLedgerApp {
                     addDeposit();
                     break;
                 case "P":
-                    //makePayment();
+                    makePayment();
                     break;
                 case "V":
-                    //ledgerMenu();
+                    ledgerMenu();
                     break;
                 case "X":
                     System.out.println("Exiting ledger.. Goodbye!");
@@ -63,5 +63,41 @@ public class AccountingLedgerApp {
 
         System.out.println("Deposit added: " + description + " | " + vendor + " | " + amount);
         //To do: add negative amount in csv
+    }
+
+    //Make payment
+    public static void makePayment() {
+        System.out.println("Enter description: ");
+        String description = scanner.nextLine();
+
+        System.out.println("Enter vendor: ");
+        String vendor = scanner.nextLine();
+
+        System.out.println("Enter amount: ");
+        String amount = scanner.nextLine();
+
+        System.out.println("Deposit added: " + description + " | " + vendor + " | " + amount);
+    }
+
+    //Ledger Menu
+    public static void ledgerMenu() {
+        String choice = "";
+
+        while(!choice.equalsIgnoreCase("H")) {
+            System.out.println("\n----Ledger Menu-----");
+            System.out.println("[A] All Transactions");
+            System.out.println("[D] Deposits");
+            System.out.println("[D] Payments");
+            System.out.println("[D] Reports");
+            System.out.println("[D] Home");
+            System.out.println("Enter your choice: ");
+
+            choice = scanner.nextLine().trim();
+
+            switch (choice.toUpperCase()) {
+                case "A":
+
+            }
+        }
     }
 }
