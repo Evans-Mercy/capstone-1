@@ -27,6 +27,20 @@ public class Ledger {
         }
     }
 
+    public static void main(String[] args) {
+        Transactions testTransaction = new Transactions(
+                java.time.LocalDate.now(),
+                java.time.LocalTime.now(),
+                "Test Deposit",
+                "Amazon",
+                35.00
+        );
+
+        addTransaction(testTransaction);
+
+        System.out.println("Transaction added!");
+    }
+
     //all transactions
     public static void allTransactions() {
         System.out.println("All transactions: ");
