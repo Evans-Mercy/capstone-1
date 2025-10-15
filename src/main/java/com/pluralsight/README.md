@@ -7,6 +7,20 @@ This app is for tracking deposits and payments.
 3. Displaying transactions
 4. Interactive Home Screen with menu options
 
+## Classes:
+1. Main
+    - Display menus
+    - Takes user input
+    - Creates transaction objects
+    - Stores transactions in an arraylist
+    - Saves to and reads from transactions.csv
+   
+2. Transaction
+    - Represents one transaction record
+    - Holds: 
+            - date, time, description, vendor, amount
+    - formats itself as a CSV line so you can save it easily
+
 Challenges & Solutions
 
 - Formatting the time - used 'DateTimeFormatter', & import the class.

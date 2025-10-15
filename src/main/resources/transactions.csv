@@ -3,3 +3,10 @@ date|time|description|vendor|amount
 2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
 date='2025-10-15', time='11:57:43.304780200', description='Test Deposit', vendor='Amazon', amount=35.0}
 2025-10-15|12:11:03.948383200|Keyboard tesing|Amazon|600.0
+2025-10-15|16:45:48|mouse|temu|23.0
+2025-10-15|17:13:38|screen|amazon|1200.0
+2025-10-15|17:14:12|laptop|wayfair|400.0
+
+2025-10-15|17:19:32|Couch testing negative|wayfair|-2400.0
+2025-10-15|17:28:20|lipstain|sephora|20.0
+2025-10-15|17:28:49|lip stain|sephora|-20.0

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+//Represents one transaction
 public class Transaction {
 
     private LocalDate date;
@@ -48,16 +49,15 @@ public class Transaction {
     // read
     // display
 
-    //return csv line for saving
+    //converts the transaction into a formatted line for easy saving to csv file
     public String toCsvLine() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        //ask dave
         return date.format(dateFormatter) + "|" + time.format(timeFormatter) + "|" + description + "|" + vendor + "|" + amount;
     }
 
-    //To string method to print
+    //To string method to display on screen
     //ask Dave to remind me the override explanation
     @Override
     public String toString() {
