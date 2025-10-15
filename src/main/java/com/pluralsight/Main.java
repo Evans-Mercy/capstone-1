@@ -1,14 +1,23 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    //stores all transactions
+    static List<Transaction> transactions = new ArrayList<>();
 
     //user input
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        //Starts the app
+        //Entry point -Starts the app
         homeScreen();
     }
 
@@ -16,7 +25,7 @@ public class Main {
     public static void homeScreen(){
         String choice = "";
 
-        //loop that runs until user chooses to exit
+        //loop that runs until user chooses to exit (Displays menu repeatedly until user types "X")
         while (!choice.equalsIgnoreCase("X")){
             System.out.println("\n-----------------------");
             System.out.println("Welcome to Mercy's ledger");
@@ -57,10 +66,23 @@ public class Main {
         String vendor = scanner.nextLine();
 
         System.out.println("Enter amount: ");
-        String amount = scanner.nextLine();
+        double amount = Double.parseDouble(scanner.nextLine());
 
-        System.out.println("Deposit added: " + description + " | " + vendor + " | " + amount);
-        //To do: add negative amount in csv
+        //Instantiate a new transaction object with current date and time
+        Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+
+        //add new transaction to list
+        transactions.add(transaction);
+
+        //append transaction to file and stores
+        //use a try-catch to safely open and close file writer
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("transactions.csv", true))){
+            writer.write(transaction.toCsvLine());
+            writer.newLine();
+            System.out.println("Deposit added successfully!");
+        } catch (IOException e){
+            System.out.println("Error saving transaction: " + e.getMessage());
+        }
     }
 
     //Make payment

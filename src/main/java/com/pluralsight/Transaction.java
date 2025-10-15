@@ -1,10 +1,10 @@
 package com.pluralsight;
 
-import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class Transactions {
+public class Transaction {
 
     private LocalDate date;
     private LocalTime time;
@@ -13,7 +13,7 @@ public class Transactions {
     private double amount;
 
     //Constructor
-    public Transactions(LocalDate date, LocalTime time, String description, String vendor, double amount) {
+    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
         this.date = date;
         this.time = time;
         this.description = description;

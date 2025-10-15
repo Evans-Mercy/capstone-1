@@ -18,7 +18,7 @@ public class Ledger {
     //search transactions by vendor
 
     //add a transaction
-    public static void addTransaction(Transactions t) {
+    public static void addTransaction(Transaction t) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(transactionFile, true))){
             writer.write(t.toCsvLine());
             writer.newLine();
@@ -28,7 +28,7 @@ public class Ledger {
     }
 
     public static void main(String[] args) {
-        Transactions testTransaction = new Transactions(
+        Transaction testTransaction = new Transaction(
                 java.time.LocalDate.now(),
                 java.time.LocalTime.now(),
                 "Keyboard testing",
