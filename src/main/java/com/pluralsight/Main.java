@@ -169,6 +169,7 @@ public class Main {
             System.out.println("[A] All transactions");
             System.out.println("[D] Deposits ");
             System.out.println("[P] Payments");
+            System.out.println("[R] Reports");
             System.out.println("[H] Home");
             System.out.println("Enter your choice: ");
 
@@ -183,6 +184,8 @@ public class Main {
                     break;
                 case "P":
                     showPayments();
+                case "R":
+                    reportsMenu();
                     break;
                 case "H":
                     break;
@@ -233,7 +236,7 @@ public class Main {
         }
     }
 
-    //show negative payments
+    //shows negative payments
     public static void showPayments() {
         if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
@@ -247,6 +250,31 @@ public class Main {
             if (t.getAmount() < 0) {
                 String amountString = "" + t.getAmount();
                 System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
+            }
+        }
+    }
+
+    //Reports menu
+    public static void reportsMenu(){
+        String choice = "";
+
+        while(!choice.equals("0")){
+            System.out.println("\n------Reports Menu------");
+            System.out.println("[1] Month to Date");
+            System.out.println("[2] Previous Month");
+            System.out.println("[1] Year to Date");
+            System.out.println("[1] Previous Year");
+            System.out.println("[1] Search by Vendor");
+            System.out.println("[1] Back to Ledger");
+            System.out.println("Enter your choice: ");
+
+            choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    reportMonthToDate();
+                default:
+                    System.out.println("Invalid oprion. Try again!");
             }
         }
     }
