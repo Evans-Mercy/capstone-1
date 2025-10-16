@@ -44,7 +44,7 @@ public class Transaction {
         return amount;
     }
 
-    //to do
+    //todo
     //save file
     // read
     // display
@@ -58,15 +58,10 @@ public class Transaction {
     }
 
     //To string method to display on screen
-    //ask Dave to remind me the override explanation
     @Override
     public String toString() {
-        return "Transactions{" +
-                "date='" + date + '\'' +
-                ", time='" + time + '\'' +
-                ", description='" + description + '\'' +
-                ", vendor='" + vendor + '\'' +
-                ", amount=" + amount +
-                '}';
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return  date.format(dateFormatter) + "|" + time.format(timeFormatter) + "|" + description + "|" + vendor + "|" +  amount ;
     }
 }

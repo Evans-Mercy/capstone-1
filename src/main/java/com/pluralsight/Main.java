@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,12 @@ public class Main {
 
     //user input
     static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        //Entry point -Starts the app
+        loadTransactionsFromFile();
+        homeScreen();
+    }
 
     //Load transactions from csv file
     public static void loadTransactionsFromFile() {
@@ -34,19 +41,15 @@ public class Main {
                     //instantiate a new transaction object with all values from this line and adds to list
                     Transaction transaction = new Transaction(date, time, description, vendor, amount);
                     transactions.add(transaction);
+                    System.out.println("testing" + transactions);
                 }
             }
             bufferedReader.close();
         } catch (Exception e) {
-            System.out.println("No previous transactions");
+            System.out.println("File not found");
         }
     }
 
-    public static void main(String[] args) {
-        //Entry point -Starts the app
-        loadTransactionsFromFile();
-        homeScreen();
-    }
 
     //Home screen
     public static void homeScreen() {
@@ -195,12 +198,47 @@ public class Main {
     //displays all transactions
     //todo
     // sort to show newest first
+    //get time and date
+//sorting example
+    public class Person implements Comparable<Person> {
+        private String name;
+        private int age;
+
+        public Person(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+
+        @Override
+        public int compareTo(Person otherPerson) {
+            return this.name.compareTo(otherPerson.getName());
+        }
+    }
+
+
     public static void showAllEntries() {
-        if (transactions.isEmpty()) {
+        /*if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
             return;
         }
-
+*/
         System.out.println("\nAll transactions:");
         System.out.println("Date | Time | Description | Vendor | Amount");
 
@@ -267,9 +305,10 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                    reportMonthToDate();
+                    MonthToDate();
                     break;
                 case "2":
+                    previousMonth();
                     break;
                 default:
                     System.out.println("Invalid option. Try again!");
@@ -277,11 +316,29 @@ public class Main {
         }
     }
 
-    public static void reportMonthToDate() {
-        if (transactions.isEmpty()) {
-            System.out.println("No transactions found");
-            return;
+    public static void MonthToDate() {
+        //gets today's date
+        LocalDate today = LocalDate.now();
+
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction t = transactions.get(i);
+
+            if (t.getDate().getMonth() == today.getMonth() && t.getDate().getYear() == today.getYear()) {
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + t.getAmount());
+            }
         }
+    }
+
+    public static void previousMonth(){
+        //today's date
+        LocalDate today = LocalDate.now();
+        int currentMonth = today.getMonthValue();
+        int currentYear = today.getYear();
+
+        int previousMonth = currentMonth - 1;
+        int yearOfPreviousMonth = currentYear;
+
+
     }
 }
 
