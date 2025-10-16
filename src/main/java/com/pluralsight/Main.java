@@ -1,10 +1,6 @@
 package com.pluralsight;
 
-import jdk.swing.interop.SwingInterOpUtils;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -20,12 +16,15 @@ public class Main {
 
     public static void loadTransactionsFromFile() {
 
-        //fileScanner reads the file line by line - tells which file to read
-        try (Scanner fileScanner = new Scanner(new java.io.File("transactions.csv"))) {
+        //buffered reader reads the file line by line - tells which file to read
+        try {
+            FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
 
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
+            while ((line = bufferedReader.readLine()) != null) {
                 String[] parts = line.split("\\|");
+
                 if (parts.length == 5) {
                     LocalDate date = LocalDate.parse(parts[0]);
                     LocalTime time = LocalTime.parse(parts[1]);
@@ -107,132 +106,139 @@ public class Main {
 
         //append transaction to file and stores
         //use a try-catch to safely open and close file writer
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
-            writer.write(transaction.toCsvLine());
-            writer.newLine();
+        try {
+            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(transaction.toCsvLine());
+            bufferedWriter.newLine();
             System.out.println("Deposit added successfully!");
+
+            bufferedWriter.close();
+
         } catch (IOException e) {
             System.out.println("Error saving transaction: " + e.getMessage());
         }
     }
+//Make payment
 
-    //Make payment
+public static void makePayment() {
 
-    public static void makePayment() {
+    System.out.println("Enter description: ");
+    String description = scanner.nextLine();
 
-        System.out.println("Enter description: ");
-        String description = scanner.nextLine();
+    System.out.println("Enter vendor: ");
+    String vendor = scanner.nextLine();
 
-        System.out.println("Enter vendor: ");
-        String vendor = scanner.nextLine();
+    System.out.println("Enter amount: ");
+    double amount = Double.parseDouble(scanner.nextLine());
 
-        System.out.println("Enter amount: ");
-        double amount = Double.parseDouble(scanner.nextLine());
+    //Convert amount to negative to distinguish from deposits
+    amount = -Math.abs(amount);
 
-        //Convert amount to negative to distinguish from deposits
-        amount = -Math.abs(amount);
+    //instantiate a new transaction object
+    Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
 
-        //instantiate a new transaction object
-        Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+    //add to transaction list
+    transactions.add(payment);
 
-        //add to transaction list
-        transactions.add(payment);
+    //append to csv file
+    try {
+        FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv");
+        BufferedWriter bufferedwriter = new BufferedWriter(fileWriter);
+        bufferedwriter.write(payment.toCsvLine());
+        bufferedwriter.newLine();
+        System.out.println("Payment added successfully!");
+    } catch (IOException e) {
+        System.out.println("Error saving transaction: " + e.getMessage());
+    }
+}
 
-        //append to csv file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
-            writer.write(payment.toCsvLine());
-            writer.newLine();
-            System.out.println("Payment added successfully!");
-        } catch (IOException e) {
-            System.out.println("Error saving transaction: " + e.getMessage());
-        }
+
+//Ledger Menu
+public static void ledgerMenu() {
+
+    if (transactions.isEmpty()) {
+        System.out.println("No transactions found.");
+        return;
     }
 
+    String choice = "";
 
-    //Ledger Menu
-    public static void ledgerMenu() {
+    //loops until user exits
+    while (!choice.equalsIgnoreCase("H")) {
 
-        if (transactions.isEmpty()) {
-            System.out.println("No transactions found.");
-            return;
+        System.out.println("\n-----Ledger Menu-----");
+        System.out.println("[A] All transactions");
+        System.out.println("[D] Deposits ");
+        System.out.println("[P] Payments");
+        System.out.println("[H] Home");
+        System.out.println("Enter your choice: ");
+        choice = scanner.nextLine().trim();
+
+        //
+        switch (choice.toUpperCase()) {
+            case "A":
+                //displays all transactions
+                System.out.println("\nAll Transactions:");
+                System.out.println("Date | Time  | Description | Vendor | Amount");
+
+                //loops entire transaction list and prints each one
+                for (Transaction t : transactions) {
+                    String amountString = t.getAmount() >= 0 ? "+" + t.getAmount() : String.valueOf(t.getAmount());
+                    System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
+                }
+                break;
+            case "D":
+                showDeposits();
+                break;
+            case "P":
+                showPayments();
+                break;
+            case "H":
+                break;
+            default:
+                System.out.println("Invalid option. Try again!");
         }
 
-        String choice = "";
+        //todo
+        // sort to show newest first
+    }
+}
 
-        //loops until user exits
-        while (!choice.equalsIgnoreCase("H")) {
-
-            System.out.println("\n-----Ledger Menu-----");
-            System.out.println("[A] All transactions");
-            System.out.println("[D] Deposits ");
-            System.out.println("[P] Payments");
-            System.out.println("[H] Home");
-            System.out.println("Enter your choice: ");
-            choice = scanner.nextLine().trim();
-
-            //
-            switch (choice.toUpperCase()) {
-                case "A":
-                    //displays all transactions
-                    System.out.println("\nAll Transactions:");
-                    System.out.println("Date | Time  | Description | Vendor | Amount");
-
-                    //loops entire transaction list and prints each one
-                    for (Transaction t : transactions) {
-                        String amountString = t.getAmount() >= 0 ? "+" + t.getAmount() : String.valueOf(t.getAmount());
-                        System.out.println(t.getDate() + " | " + t.getVendor() + " | " + amountString);
-                    }
-                    break;
-                case "D":
-                    showDeposits();
-                    break;
-                case "P":
-                    showPayments();
-                    break;
-                case "H":
-                    break;
-                default:
-                    System.out.println("Invalid option. Try again!");
-            }
-
-            //todo
-            // sort to show newest first
-        }
+//Show only deposits
+public static void showDeposits() {
+    if (transactions.isEmpty()) {
+        System.out.println("No transactions found.");
+        return;
     }
 
-    //Show only deposits
-    public static void showDeposits() {
-        if (transactions.isEmpty()) {
-            System.out.println("No transactions found.");
-            return;
-        }
+    System.out.println("\n--------Deposit---------");
+    System.out.println("Date  | Time   | Description    | Vendor   | Amount");
 
-        System.out.println("\n--------Deposit---------");
-        System.out.println("Date  | Time   | Description    | Vendor   | Amount");
-
-        for (Transaction t : transactions) {
-            if (t.getAmount() >= 0) {
-                String amountString = "+" + t.getAmount();
-                System.out.printf("%s | %s | %-15s | %-10s | %s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), amountString);
-            }
-        }
-    }
-
-    public static void showPayments(){
-        if(transactions.isEmpty()){
-            System.out.println("No transactions found.");
-        }
-
-        System.out.println("\n--------Payments---------");
-        System.out.println("Date | Time  | Description  | Vendor  | Amount");
-
-        for (Transaction t : transactions) {
-            if (t.getAmount() < 0) {
-                System.out.printf("%s | %s | %-15s | %-10s | %s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
-            }
+    for (Transaction t : transactions) {
+        if (t.getAmount() >= 0) {
+            String amountString = "+" + t.getAmount();
+            System.out.printf("%s | %s | %-15s | %-10s | %s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), amountString);
         }
     }
 }
+
+//show negative payments
+public static void showPayments() {
+    if (transactions.isEmpty()) {
+        System.out.println("No transactions found.");
+    }
+
+    System.out.println("\n--------Payments---------");
+    System.out.println("Date | Time  | Description  | Vendor  | Amount");
+
+    for (Transaction t : transactions) {
+        if (t.getAmount() < 0) {
+            System.out.printf("%s | %s | %-15s | %-10s | %s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+        }
+    }
+}
+    }
 /*
     //Reports menu
     public static void reportsMenu() {
