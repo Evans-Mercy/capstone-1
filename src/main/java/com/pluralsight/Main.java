@@ -59,7 +59,7 @@ public class Main {
             System.out.println("-------------------------");
             System.out.println("[D] Add deposit");
             System.out.println("[P] Make payment");
-            System.out.println("[V] View ledger");
+            System.out.println("[L] Ledger");
             System.out.println("[X] Exit");
             System.out.println("Enter your choice: ");
 
@@ -72,7 +72,7 @@ public class Main {
                 case "P":
                     makePayment();
                     break;
-                case "V":
+                case "L":
                     ledgerMenu();
                     break;
                 case "X":
@@ -166,8 +166,8 @@ public class Main {
         while (!choice.equalsIgnoreCase("H")) {
 
             System.out.println("\n-----Ledger Menu-----");
-            System.out.println("[A] All transactions");
-            System.out.println("[D] Deposits ");
+            System.out.println("[A] All Entries");
+            System.out.println("[D] Deposits");
             System.out.println("[P] Payments");
             System.out.println("[R] Reports");
             System.out.println("[H] Home");
@@ -177,7 +177,7 @@ public class Main {
 
             switch (choice.toUpperCase()) {
                 case "A":
-                    showAllTransactions();
+                    showAllEntries();
                     break;
                 case "D":
                     showDeposits();
@@ -198,7 +198,7 @@ public class Main {
     //displays all transactions
     //todo
     // sort to show newest first
-    public static void showAllTransactions() {
+    public static void showAllEntries() {
         if (transactions.isEmpty()) {
             System.out.println("No transactions found");
             return;
@@ -277,6 +277,14 @@ public class Main {
                     System.out.println("Invalid oprion. Try again!");
             }
         }
+    }
+
+    public static void reportMonthToDate(){
+        if (transactions.isEmpty()){
+            System.out.println("No transactions found");
+            return;
+        }
+
     }
 }
 
