@@ -14,9 +14,8 @@ public class Main {
     //user input
     static Scanner scanner = new Scanner(System.in);
 
+    //Load transactions from csv file
     public static void loadTransactionsFromFile() {
-
-        //buffered reader reads the file line by line - tells which file to read
         try {
             FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -37,6 +36,7 @@ public class Main {
                     transactions.add(transaction);
                 }
             }
+            bufferedReader.close();
         } catch (Exception e) {
             System.out.println("No previous transactions");
         }
@@ -107,138 +107,153 @@ public class Main {
         //append transaction to file and stores
         //use a try-catch to safely open and close file writer
         try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv");
+            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv", true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
             bufferedWriter.write(transaction.toCsvLine());
             bufferedWriter.newLine();
-            System.out.println("Deposit added successfully!");
-
             bufferedWriter.close();
 
+            System.out.println("Deposit added successfully!");
         } catch (IOException e) {
             System.out.println("Error saving transaction: " + e.getMessage());
         }
     }
 //Make payment
 
-public static void makePayment() {
+    public static void makePayment() {
 
-    System.out.println("Enter description: ");
-    String description = scanner.nextLine();
+        System.out.println("Enter description: ");
+        String description = scanner.nextLine();
 
-    System.out.println("Enter vendor: ");
-    String vendor = scanner.nextLine();
+        System.out.println("Enter vendor: ");
+        String vendor = scanner.nextLine();
 
-    System.out.println("Enter amount: ");
-    double amount = Double.parseDouble(scanner.nextLine());
+        System.out.println("Enter amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
 
-    //Convert amount to negative to distinguish from deposits
-    amount = -Math.abs(amount);
+        //Convert amount to negative to distinguish from deposits
+        amount = -Math.abs(amount);
 
-    //instantiate a new transaction object
-    Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+        //instantiate a new transaction object
+        Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
 
-    //add to transaction list
-    transactions.add(payment);
+        //add to transaction list
+        transactions.add(payment);
 
-    //append to csv file
-    try {
-        FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv");
-        BufferedWriter bufferedwriter = new BufferedWriter(fileWriter);
-        bufferedwriter.write(payment.toCsvLine());
-        bufferedwriter.newLine();
-        System.out.println("Payment added successfully!");
-    } catch (IOException e) {
-        System.out.println("Error saving transaction: " + e.getMessage());
-    }
-}
+        //append to csv file
+        try {
+            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv");
+            BufferedWriter bufferedwriter = new BufferedWriter(fileWriter);
 
+            bufferedwriter.write(payment.toCsvLine());
+            bufferedwriter.newLine();
 
-//Ledger Menu
-public static void ledgerMenu() {
-
-    if (transactions.isEmpty()) {
-        System.out.println("No transactions found.");
-        return;
-    }
-
-    String choice = "";
-
-    //loops until user exits
-    while (!choice.equalsIgnoreCase("H")) {
-
-        System.out.println("\n-----Ledger Menu-----");
-        System.out.println("[A] All transactions");
-        System.out.println("[D] Deposits ");
-        System.out.println("[P] Payments");
-        System.out.println("[H] Home");
-        System.out.println("Enter your choice: ");
-        choice = scanner.nextLine().trim();
-
-        //
-        switch (choice.toUpperCase()) {
-            case "A":
-                //displays all transactions
-                System.out.println("\nAll Transactions:");
-                System.out.println("Date | Time  | Description | Vendor | Amount");
-
-                //loops entire transaction list and prints each one
-                for (Transaction t : transactions) {
-                    String amountString = t.getAmount() >= 0 ? "+" + t.getAmount() : String.valueOf(t.getAmount());
-                    System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
-                }
-                break;
-            case "D":
-                showDeposits();
-                break;
-            case "P":
-                showPayments();
-                break;
-            case "H":
-                break;
-            default:
-                System.out.println("Invalid option. Try again!");
-        }
-
-        //todo
-        // sort to show newest first
-    }
-}
-
-//Show only deposits
-public static void showDeposits() {
-    if (transactions.isEmpty()) {
-        System.out.println("No transactions found.");
-        return;
-    }
-
-    System.out.println("\n--------Deposit---------");
-    System.out.println("Date  | Time   | Description    | Vendor   | Amount");
-
-    for (Transaction t : transactions) {
-        if (t.getAmount() >= 0) {
-            String amountString = "+" + t.getAmount();
-            System.out.printf("%s | %s | %-15s | %-10s | %s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), amountString);
+            System.out.println("Payment added successfully!");
+        } catch (IOException e) {
+            System.out.println("Error saving transaction: " + e.getMessage());
         }
     }
-}
 
-//show negative payments
-public static void showPayments() {
-    if (transactions.isEmpty()) {
-        System.out.println("No transactions found.");
+    //Ledger Menu
+    public static void ledgerMenu() {
+
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        String choice = "";
+
+        //loops until user exits
+        while (!choice.equalsIgnoreCase("H")) {
+
+            System.out.println("\n-----Ledger Menu-----");
+            System.out.println("[A] All transactions");
+            System.out.println("[D] Deposits ");
+            System.out.println("[P] Payments");
+            System.out.println("[H] Home");
+            System.out.println("Enter your choice: ");
+            choice = scanner.nextLine().trim();
+
+            //
+            switch (choice.toUpperCase()) {
+                case "A":
+                    showAllTransactions();
+                    break;
+                case "D":
+                    showDeposits();
+                    break;
+                case "P":
+                    showPayments();
+                    break;
+                case "H":
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again!");
+            }
+
+            //todo
+            // sort to show newest first
+        }
     }
 
-    System.out.println("\n--------Payments---------");
-    System.out.println("Date | Time  | Description  | Vendor  | Amount");
+    //displays all transactions
+    public static void showAllTransactions() {
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found");
+            return;
+        }
 
-    for (Transaction t : transactions) {
-        if (t.getAmount() < 0) {
-            System.out.printf("%s | %s | %-15s | %-10s | %s%n", t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+        System.out.println("\nAll transactions:");
+        System.out.println("Date | Time | Description | Vendor | Amount");
+
+        for (Transaction t : transactions) {
+            String amountString;
+            if (t.getAmount() >= 0) {
+                amountString = "+" + t.getAmount();
+            } else {
+                amountString = "" + t.getAmount();
+            }
+            System.out.println(t.getDate() + " | " + t.getTime() + " | "  + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
+        }
+    }
+
+    //Show only deposits
+    public static void showDeposits() {
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        System.out.println("\n--------Deposit---------");
+        System.out.println("Date | Time | Description | Vendor | Amount");
+
+        for (Transaction t : transactions) {
+            if (t.getAmount() >= 0) {
+                String amountString = "+" + t.getAmount();
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
+            }
+        }
+    }
+
+    //show negative payments
+    public static void showPayments() {
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found.");
+        }
+
+        System.out.println("\n--------Payments---------");
+        System.out.println("Date | Time | Description | Vendor | Amount");
+
+        for (Transaction t : transactions) {
+            if (t.getAmount() < 0) {
+                String amountString = "" + t.getAmount();
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
+            }
         }
     }
 }
-    }
 /*
     //Reports menu
     public static void reportsMenu() {
