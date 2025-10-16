@@ -16,8 +16,34 @@ public class Main {
     //user input
     static Scanner scanner = new Scanner(System.in);
 
+    public static void loadTransactionsFromFile() {
+
+        //fileScanner reads the file line by line - tells which file to read
+        try(Scanner fileScanner = new Scanner(new java.io.File("transactions.csv"))){
+
+            while(fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                String[] parts = line.split("\\|");
+                if (parts.length == 5) {
+                    LocalDate date = LocalDate.parse(parts[0]);
+                    LocalTime time = LocalTime.parse(parts[1]);
+                    String description = parts[2];
+                    String vendor = parts[3];
+                    double amount = Double.parseDouble(parts[4]);
+
+                    //instantiate a new transaction object with all values from this line and adds to list
+                    Transaction transaction = new Transaction(date, time, description, vendor, amount);
+                    transactions.add(transaction);
+                }
+            }
+        } catch (Exception e){
+            System.out.println("No previous transactions");
+        }
+    }
+
     public static void main(String[] args) {
         //Entry point -Starts the app
+        loadTransactionsFromFile();
         homeScreen();
     }
 
@@ -46,7 +72,7 @@ public class Main {
                     makePayment();
                     break;
                 case "V":
-                    //ledgerMenu();
+                    ledgerMenu();
                     break;
                 case "X":
                     System.out.println("Exiting ledger.. Goodbye!");
@@ -119,27 +145,29 @@ public class Main {
             System.out.println("Error saving transaction: " + e.getMessage());
         }
     }
-}
 
-/*
+
     //Ledger Menu
     public static void ledgerMenu() {
-        String choice = "";
 
-        while (!choice.equalsIgnoreCase("H")) {
-            System.out.println("\n----Ledger Menu-----");
-            System.out.println("[A] All Transactions");
-            System.out.println("[D] Deposits");
-            System.out.println("[P] Payments");
-            System.out.println("[R] Reports");
-            System.out.println("[H] Home");
-            System.out.println("Enter your choice: ");
+       if (transactions.isEmpty()){
+           System.out.println("No transactions found.");
+           return;
+       }
+       System.out.println("\n--------Ledger Menu-------");
+       System.out.println("Date       | Time  | Description | Vendor | Amount");
 
-            choice = scanner.nextLine().trim();
+       //todo
+        // sort to show newest first
+        for (Transaction t : transactions) {
 
+            System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + t.getAmount());
         }
     }
 
+
+}
+/*
     //Reports menu
     public static void reportsMenu() {
         String choice = "";
