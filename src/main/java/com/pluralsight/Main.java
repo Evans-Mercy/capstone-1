@@ -106,13 +106,11 @@ public class Main {
 
         //append transaction to file and stores
         //use a try-catch to safely open and close file writer
-        try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv", true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        try (
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
 
             bufferedWriter.write(transaction.toCsvLine());
             bufferedWriter.newLine();
-            bufferedWriter.close();
 
             System.out.println("Deposit added successfully!");
         } catch (IOException e) {
@@ -142,9 +140,8 @@ public class Main {
         transactions.add(payment);
 
         //append to csv file
-        try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/transactions.csv");
-            BufferedWriter bufferedwriter = new BufferedWriter(fileWriter);
+        try (
+            BufferedWriter bufferedwriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))){
 
             bufferedwriter.write(payment.toCsvLine());
             bufferedwriter.newLine();
@@ -174,9 +171,9 @@ public class Main {
             System.out.println("[P] Payments");
             System.out.println("[H] Home");
             System.out.println("Enter your choice: ");
+
             choice = scanner.nextLine().trim();
 
-            //
             switch (choice.toUpperCase()) {
                 case "A":
                     showAllTransactions();
@@ -192,13 +189,12 @@ public class Main {
                 default:
                     System.out.println("Invalid option. Try again!");
             }
-
-            //todo
-            // sort to show newest first
         }
     }
 
     //displays all transactions
+    //todo
+    // sort to show newest first
     public static void showAllTransactions() {
         if (transactions.isEmpty()) {
             System.out.println("No transactions found");
@@ -211,11 +207,11 @@ public class Main {
         for (Transaction t : transactions) {
             String amountString;
             if (t.getAmount() >= 0) {
-                amountString = "+" + t.getAmount();
+                amountString = "+" + t.getAmount(); //deposit
             } else {
                 amountString = "" + t.getAmount();
             }
-            System.out.println(t.getDate() + " | " + t.getTime() + " | "  + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
+            System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
         }
     }
 
@@ -231,7 +227,7 @@ public class Main {
 
         for (Transaction t : transactions) {
             if (t.getAmount() >= 0) {
-                String amountString = "+" + t.getAmount();
+                String amountString = "+" + t.getAmount(); //deposit
                 System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
             }
         }
@@ -241,6 +237,7 @@ public class Main {
     public static void showPayments() {
         if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
+            return;
         }
 
         System.out.println("\n--------Payments---------");
@@ -254,24 +251,5 @@ public class Main {
         }
     }
 }
-/*
-    //Reports menu
-    public static void reportsMenu() {
-        String choice = "";
 
-        while (!choice.equals("0")) {
-            System.out.println("\n ------Reports Menu-------");
-            System.out.println("[1] Month To Date");
-            System.out.println("[2] Previous Month");
-            System.out.println("[3] Year To Date");
-            System.out.println("[4] Previous Year");
-            System.out.println("[5] Search by Vendor");
-            System.out.println("[0] Back to Ledger Menu");
-            System.out.println("Enter your choice: ");
-
-            choice = scanner.nextLine().trim();
-
-        }
-    }
-*/
 
