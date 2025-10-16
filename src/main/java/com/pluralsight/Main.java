@@ -159,9 +159,17 @@ public class Main {
 
        //todo
         // sort to show newest first
+
         for (Transaction t : transactions) {
 
-            System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + t.getAmount());
+            //Deposit or payment
+            String amountString;
+            if (t.getAmount() >= 0){
+                amountString = "+" + t.getAmount();      //deposit
+            } else {
+                amountString = String.valueOf(t.getAmount());
+            }
+            System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + " | " + amountString);
         }
     }
 
