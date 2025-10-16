@@ -86,6 +86,7 @@ public class Main {
 
     //Add deposit
     public static void addDeposit() {
+
         System.out.println("Enter description: ");
         String description = scanner.nextLine();
 
@@ -141,7 +142,7 @@ public class Main {
 
         //append to csv file
         try (
-            BufferedWriter bufferedwriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))){
+                BufferedWriter bufferedwriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
 
             bufferedwriter.write(payment.toCsvLine());
             bufferedwriter.newLine();
@@ -154,11 +155,6 @@ public class Main {
 
     //Ledger Menu
     public static void ledgerMenu() {
-
-        if (transactions.isEmpty()) {
-            System.out.println("No transactions found.");
-            return;
-        }
 
         String choice = "";
 
@@ -184,6 +180,7 @@ public class Main {
                     break;
                 case "P":
                     showPayments();
+                    break;
                 case "R":
                     reportsMenu();
                     break;
@@ -200,7 +197,7 @@ public class Main {
     // sort to show newest first
     public static void showAllEntries() {
         if (transactions.isEmpty()) {
-            System.out.println("No transactions found");
+            System.out.println("No transactions found.");
             return;
         }
 
@@ -221,10 +218,9 @@ public class Main {
     //Show only deposits
     public static void showDeposits() {
         if (transactions.isEmpty()) {
-            System.out.println("No transactions found.");
+            System.out.println("No transaction found");
             return;
         }
-
         System.out.println("\n--------Deposit---------");
         System.out.println("Date | Time | Description | Vendor | Amount");
 
@@ -239,10 +235,9 @@ public class Main {
     //shows negative payments
     public static void showPayments() {
         if (transactions.isEmpty()) {
-            System.out.println("No transactions found.");
+            System.out.println("No transaction found");
             return;
         }
-
         System.out.println("\n--------Payments---------");
         System.out.println("Date | Time | Description | Vendor | Amount");
 
@@ -255,17 +250,17 @@ public class Main {
     }
 
     //Reports menu
-    public static void reportsMenu(){
+    public static void reportsMenu() {
         String choice = "";
 
-        while(!choice.equals("0")){
+        while (!choice.equals("0")) {
             System.out.println("\n------Reports Menu------");
             System.out.println("[1] Month to Date");
             System.out.println("[2] Previous Month");
-            System.out.println("[1] Year to Date");
-            System.out.println("[1] Previous Year");
-            System.out.println("[1] Search by Vendor");
-            System.out.println("[1] Back to Ledger");
+            System.out.println("[3] Year to Date");
+            System.out.println("[4] Previous Year");
+            System.out.println("[5] Search by Vendor");
+            System.out.println("[6] Back to Ledger");
             System.out.println("Enter your choice: ");
 
             choice = scanner.nextLine().trim();
@@ -273,19 +268,22 @@ public class Main {
             switch (choice) {
                 case "1":
                     reportMonthToDate();
+                    break;
+                case "2":
+                    break;
                 default:
-                    System.out.println("Invalid oprion. Try again!");
+                    System.out.println("Invalid option. Try again!");
             }
         }
     }
 
-    public static void reportMonthToDate(){
-        if (transactions.isEmpty()){
+    public static void reportMonthToDate() {
+        if (transactions.isEmpty()) {
             System.out.println("No transactions found");
             return;
         }
-
     }
 }
+
 
 
