@@ -6,9 +6,7 @@
 This project stressed me out, but I learned a lot and had fun building it from scratch!
 
 - Instructor - Dave Dykes
-- Helper - Ninjava 
-
-
+- Helper - Ninjava Study Buddy
 
 ## Features:
 1. Adding a deposit
@@ -16,7 +14,7 @@ This project stressed me out, but I learned a lot and had fun building it from s
 3. Store transactions
 4. Display transactions
 5. Reports Menu that generates:
-        -Month to date
+        - Month to date
         - Previous month
         - Year to date
         - Previous Year

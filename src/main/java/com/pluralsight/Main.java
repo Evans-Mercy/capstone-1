@@ -109,7 +109,6 @@ public class Main {
         transactions.add(transaction);
 
         //append transaction to file and stores
-        //use a try-catch to safely open and close file writer
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
 
             bufferedWriter.write(transaction.toCsvLine());
@@ -341,7 +340,6 @@ public class Main {
     }
 
     public static void yearToDate() {
-        //today's date
         LocalDate today = LocalDate.now();
         int currentYear = today.getYear();
 
@@ -367,7 +365,6 @@ public class Main {
 
     //previous year
     public static void previousYear() {
-        //today's date
         LocalDate today = LocalDate.now();
         int previousYear = today.getYear() - 1;
 
