@@ -301,6 +301,7 @@ public class Main {
         int currentMonth = today.getMonthValue();
         int currentYear = today.getYear();
 
+        //previous month and year
         int previousMonth = currentMonth - 1;
         int yearOfPreviousMonth = currentYear;
 
@@ -308,6 +309,8 @@ public class Main {
             previousMonth = 12;
             yearOfPreviousMonth = currentYear - 1;
         }
+
+        //header
         System.out.println("\nTransactions from previous month: ");
         System.out.println("Date | Time | Description | Vendor | Amount");
 
@@ -322,10 +325,12 @@ public class Main {
                 } else {
                     amountString = "" + t.getAmount();
                 }
-                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getVendor() + " | " + amountString);
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + amountString);
             }
         }
     }
+
+
 }
 
 
