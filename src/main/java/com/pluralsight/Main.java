@@ -284,6 +284,8 @@ public class Main {
                 case "5":
                     searchByVendor();
                     break;
+                case "6":
+                    break;
                 default:
                     System.out.println("Invalid option. Try again!");
             }

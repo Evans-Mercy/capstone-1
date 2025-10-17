@@ -1,9 +1,14 @@
 # Accounting Ledger App 
 
+- **This app is for tracking deposits and payments**
+
 ### Author - Mercy Evans 
 This project stressed me out, but I learned a lot and had fun building it from scratch!
 
-- **This app is for tracking deposits and payments**
+- Instructor - Dave Dykes
+- Helper - Ninjava 
+
+
 
 ## Features:
 1. Adding a deposit
