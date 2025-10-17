@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,9 +25,9 @@ public class Main {
     //Load transactions from csv file
     public static void loadTransactionsFromFile() {
         try {
-            FileReader fileReader = new FileReader("src/main/resources/transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
             String line;
+            String reader = bufferedReader.readLine();
 
             while ((line = bufferedReader.readLine()) != null) {
                 String[] parts = line.split("\\|");
@@ -41,7 +42,7 @@ public class Main {
                     //instantiate a new transaction object with all values from this line and adds to list
                     Transaction transaction = new Transaction(date, time, description, vendor, amount);
                     transactions.add(transaction);
-                    System.out.println("testing" + transactions);
+                    //System.out.println("testing" + transactions);
                 }
             }
             bufferedReader.close();
@@ -99,19 +100,18 @@ public class Main {
         System.out.println("Enter amount: ");
         double amount = Double.parseDouble(scanner.nextLine());
 
-        //deposit stays positive
-        amount = Math.abs(amount);
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
 
         //Instantiate a new transaction object with current date and time
-        Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+        Transaction transaction = new Transaction(date, time, description, vendor, amount);
 
         //add new transaction to list
         transactions.add(transaction);
 
         //append transaction to file and stores
         //use a try-catch to safely open and close file writer
-        try (
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/resources/transactions.csv", true))) {
 
             bufferedWriter.write(transaction.toCsvLine());
             bufferedWriter.newLine();
@@ -121,8 +121,8 @@ public class Main {
             System.out.println("Error saving transaction: " + e.getMessage());
         }
     }
-//Make payment
 
+    //Make payment
     public static void makePayment() {
 
         System.out.println("Enter description: ");
@@ -196,49 +196,15 @@ public class Main {
     }
 
     //displays all transactions
-    //todo
-    // sort to show newest first
-    //get time and date
-//sorting example
-    public class Person implements Comparable<Person> {
-        private String name;
-        private int age;
-
-        public Person(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-
-        @Override
-        public int compareTo(Person otherPerson) {
-            return this.name.compareTo(otherPerson.getName());
-        }
-    }
-
-
     public static void showAllEntries() {
-        /*if (transactions.isEmpty()) {
+        if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
             return;
         }
-*/
+
+        //sort transactions newest first
+        Collections.sort(transactions);
+
         System.out.println("\nAll transactions:");
         System.out.println("Date | Time | Description | Vendor | Amount");
 
@@ -338,7 +304,27 @@ public class Main {
         int previousMonth = currentMonth - 1;
         int yearOfPreviousMonth = currentYear;
 
+        if(previousMonth == 0){
+            previousMonth = 12;
+            yearOfPreviousMonth = currentYear - 1;
+        }
+        System.out.println("\nTransactions from previous month: ");
+        System.out.println("Date | Time | Description | Vendor | Amount");
 
+        //loop through transactions
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction t = transactions.get(i);
+
+            if(t.getDate().getMonthValue() == previousMonth && t.getDate().getYear() == yearOfPreviousMonth){
+                String amountString;
+                if(t.getAmount() >= 0) {
+                    amountString = "+" + t.getAmount();
+                } else {
+                    amountString = "" + t.getAmount();
+                }
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getVendor() + " | " + amountString);
+            }
+        }
     }
 }
 

@@ -2,10 +2,11 @@ package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 //Represents one transaction
-public class Transaction {
+public class Transaction implements Comparable<Transaction>{
 
     private LocalDate date;
     private LocalTime time;
@@ -25,29 +26,37 @@ public class Transaction {
     //Getters
 
     public LocalDate getDate() {
+
         return date;
     }
 
     public LocalTime getTime() {
+
         return time;
     }
 
     public String getDescription() {
+
         return description;
     }
 
     public String getVendor() {
+
         return vendor;
     }
 
     public double getAmount() {
+
         return amount;
     }
 
-    //todo
-    //save file
-    // read
-    // display
+    //sorting newest first
+    @Override
+    public int compareTo(Transaction otherTransaction) {
+        LocalDateTime thisDateTime = LocalDateTime.of(this.date, this.time);
+        LocalDateTime otherDateTime = LocalDateTime.of(otherTransaction.getDate(), otherTransaction.getTime());
+        return otherDateTime.compareTo(thisDateTime);
+    }
 
     //converts the transaction into a formatted line for easy saving to csv file
     public String toCsvLine() {
