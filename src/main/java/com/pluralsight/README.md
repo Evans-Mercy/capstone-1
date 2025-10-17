@@ -1,5 +1,9 @@
-# Accounting Ledger App
-This app is for tracking deposits and payments.
+# Accounting Ledger App 
+
+### Author - Mercy Evans 
+This project stressed me out, but I learned a lot and had fun building it from scratch!
+
+- **This app is for tracking deposits and payments**
 
 ## Features:
 1. Adding a deposit
@@ -53,7 +57,33 @@ This app is for tracking deposits and payments.
 
 - Differentiating payments and deposits - made payments negative using -Math.abs(amount)
 
+## Lessons Learned
 
+- Breaking a project into smaller, reusable classes (Main and Transaction)
+
+- Saw how methods and constructors work together to make code more organized and readable
+
+- Learned to test small pieces of code often instead of waiting until the end
+
+- Learned a lot of new concepts and how to apply them
+
+- Getting the file reading/writing to work correctly with the CSV file — seeing data save and load felt like a big win.
+
+- Building something from scratch that uses real programming logic
+
+## Interesting Code
+
+- Sorting transactions by newest first - ledger always displays the most recent deposits and payments at the top.
+```java
+//sorting newest first
+    @Override
+    public int compareTo(Transaction otherTransaction) {
+        LocalDateTime thisDateTime = LocalDateTime.of(this.date, this.time);
+        LocalDateTime otherDateTime = LocalDateTime.of(otherTransaction.getDate(), otherTransaction.getTime());
+        return otherDateTime.compareTo(thisDateTime);
+    }
+
+```
 
 
 
