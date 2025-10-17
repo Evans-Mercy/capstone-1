@@ -1,7 +1,7 @@
 # Accounting Ledger App 
 
 - **This app is for tracking your deposits and payments with ease...**
-- Brought to you by pluralsight -please sponsor me :)
+- Brought to you by the good folks at jetBrains -please sponsor me :)
 
 ### Author - Mercy Evans 
 This project stressed me out, but I learned a lot and had fun building it from scratch!
