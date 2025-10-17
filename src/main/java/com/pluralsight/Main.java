@@ -26,7 +26,8 @@ public class Main {
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/transactions.csv"));
             String line;
-            String reader = bufferedReader.readLine();
+            //skips header
+            bufferedReader.readLine();
 
             while ((line = bufferedReader.readLine()) != null) {
                 String[] parts = line.split("\\|");
