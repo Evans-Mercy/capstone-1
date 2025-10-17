@@ -38,6 +38,9 @@ This project stressed me out, but I learned a lot and had fun building it from s
             - date, time, description, vendor, amount
     - formats itself as a CSV line so you can save it easily
 
+## File Structure
+![img.png](img.png)
+
 ## How It Works
 
 - When the app starts, it loads all transactions from transactions.csv.

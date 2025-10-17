@@ -42,7 +42,6 @@ public class Main {
                     //instantiate a new transaction object with all values from this line and adds to list
                     Transaction transaction = new Transaction(date, time, description, vendor, amount);
                     transactions.add(transaction);
-                    //System.out.println("testing" + transactions);
                 }
             }
             bufferedReader.close();
