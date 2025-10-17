@@ -2,7 +2,6 @@ package com.pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -257,7 +256,7 @@ public class Main {
     public static void reportsMenu() {
         String choice = "";
 
-        while (!choice.equals("0")) {
+        while (!choice.equals("6")) {
             System.out.println("\n------Reports Menu------");
             System.out.println("[1] Month to Date");
             System.out.println("[2] Previous Month");
@@ -275,6 +274,15 @@ public class Main {
                     break;
                 case "2":
                     previousMonth();
+                    break;
+                case "3":
+                    yearToDate();
+                    break;
+                case "4":
+                    previousYear();
+                    break;
+                case "5":
+                    searchByVendor();
                     break;
                 default:
                     System.out.println("Invalid option. Try again!");
@@ -295,7 +303,7 @@ public class Main {
         }
     }
 
-    public static void previousMonth(){
+    public static void previousMonth() {
         //today's date
         LocalDate today = LocalDate.now();
         int currentMonth = today.getMonthValue();
@@ -305,7 +313,7 @@ public class Main {
         int previousMonth = currentMonth - 1;
         int yearOfPreviousMonth = currentYear;
 
-        if(previousMonth == 0){
+        if (previousMonth == 0) {
             previousMonth = 12;
             yearOfPreviousMonth = currentYear - 1;
         }
@@ -318,9 +326,9 @@ public class Main {
         for (int i = 0; i < transactions.size(); i++) {
             Transaction t = transactions.get(i);
 
-            if(t.getDate().getMonthValue() == previousMonth && t.getDate().getYear() == yearOfPreviousMonth){
+            if (t.getDate().getMonthValue() == previousMonth && t.getDate().getYear() == yearOfPreviousMonth) {
                 String amountString;
-                if(t.getAmount() >= 0) {
+                if (t.getAmount() >= 0) {
                     amountString = "+" + t.getAmount();
                 } else {
                     amountString = "" + t.getAmount();
@@ -330,7 +338,88 @@ public class Main {
         }
     }
 
+    public static void yearToDate() {
+        //today's date
+        LocalDate today = LocalDate.now();
+        int currentYear = today.getYear();
 
+        //header
+        System.out.println("\nTransactions from Year to date: ");
+        System.out.println("Date | Time | Description | Vendor | Amount");
+
+        //loop through transactions
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction t = transactions.get(i);
+
+            if (t.getDate().getYear() == currentYear) {
+                String amountString;
+                if (t.getAmount() >= 0) {
+                    amountString = "+" + t.getAmount();
+                } else {
+                    amountString = "" + t.getAmount();
+                }
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + amountString);
+            }
+        }
+    }
+
+    //previous year
+    public static void previousYear() {
+        //today's date
+        LocalDate today = LocalDate.now();
+        int previousYear = today.getYear() - 1;
+
+        //header
+        System.out.println("\nTransactions from Previous Year: ");
+        System.out.println("Date | Time | Description | Vendor | Amount");
+
+        //loop through transactions
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction t = transactions.get(i);
+
+            if (t.getDate().getYear() == previousYear) {
+                String amountString;
+                if (t.getAmount() >= 0) {
+                    amountString = "+" + t.getAmount();
+                } else {
+                    amountString = "" + t.getAmount();
+                }
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + amountString);
+            }
+        }
+    }
+
+    //search by vendor
+    public static void searchByVendor(){
+        System.out.println("\n Enter vendor name: ");
+        String searchVendor = scanner.nextLine().trim();
+
+        System.out.println("\n Transactions for vendor: " + searchVendor);
+        System.out.println("Date | Time | Description | Vendor | Amount");
+
+        boolean found = false;
+
+        for (int i = 0; i < transactions.size(); i++){
+            Transaction t = transactions.get(i);
+
+            if(t.getVendor().equalsIgnoreCase(searchVendor)){
+                found = true;
+                String amountString;
+                if (t.getAmount() >= 0) {
+                    amountString = "+" + t.getAmount();
+                } else {
+                    amountString = "" + t.getAmount();
+                }
+                System.out.println(t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + amountString);
+
+
+            }
+        }
+        if (!found){
+            System.out.println("No transactions found for that vendor.");
+        }
+
+    }
 }
 
 
